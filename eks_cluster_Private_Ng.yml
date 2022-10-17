@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: private-cluster
+  name: get1pg-cluster
   region: ap-south-1
 
 privateCluster:
@@ -10,8 +10,21 @@ privateCluster:
   additionalEndpointServices:
   - "autoscaling"
 
+vpc:
+  subnets:
+    public:
+      ap-south-1b:
+        id: subnet-072e15a422a93fad9 
+    private:
+      ap-south-1c:
+        id: subnet-0ad61932247323bdf
+      ap-south-1a:
+        id: subnet-09913400ac64619a2
+  nat:
+    gateway: Single
+
 nodeGroups:
-  - name: ng-1
+  - name: ng-123
     instanceType: m5.large
     iam:
       withAddonPolicies:
@@ -23,4 +36,7 @@ nodeGroups:
     volumeSize: 50
     labels: { role: workers }
     privateNetworking: true
-    availabilityZones: ["ap-south-1a", "ap-south-1b"]
+      # availabilityZones: ["ap-south-1a", "ap-south-1b"]
+    subnets:
+      - ap-south-1a
+        ap-south-1c
